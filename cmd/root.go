@@ -33,7 +33,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&RootVars.LoggingLevel, "logging-level", "l", "none", "The level to write logs at. [verbose, debug, none]")
+	rootCmd.PersistentFlags().StringVar(&RootVars.LoggingLevel, "logging-level", "none", "The level to write logs at. [verbose, debug, none]")
 	rootCmd.PersistentFlags().StringVarP(&RootVars.SACredsPath, "sa-credentials-file-path", "c", "", "The path to the credential file for the SA being used.")
 
 	rootCmd.MarkPersistentFlagRequired("sa-credentials-file-path")

@@ -6,7 +6,7 @@ import (
 
 var fileCreateCmd = &cobra.Command{
 	Use:   "create",
-	Short: "Creates a file by uploading it.",
+	Short: "Creates allDrives file by uploading it.",
 	Run: func(cmd *cobra.Command, args []string) {
 
 	},
