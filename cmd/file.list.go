@@ -124,6 +124,7 @@ func init() {
 }
 
 func outputFilesStd(files []*drive.File) {
+
 	if FileListCmdVars.listLongFormat {
 		w := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', 0)
 		for _, f := range files {
