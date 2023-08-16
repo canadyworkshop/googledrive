@@ -32,8 +32,9 @@ file create
 | page-size      | int64  | API Default                                             | The maximum number of files to include request to the Google Drive API. By default all files will be retrieved by making multiple requests. If Paged is set to true then this parameter also controls the number of files per call. |
 | paged          | bool   | false                                                   | If provided the results will be limited to the page-size. The results will also provide a pageToken value that can be used with page-token to retrieve the next set of results.                                                     |
 | page-token     | string |                                                         | Requests the next page of results based on the token. This is used in combination with page to allow manual paging of results.                                                                                                      |                                                                                                   |
+| list           | bool   | false                                                   | Displays the files in long format.                                                                                                                                                                                                  |
+| out            | string | std                                                     | Denotes the format the data should be returned in. [std                                                                                                                                                                             |json]|
 
-https://developers.google.com/drive/api/guides/search-files#examples
 
 
 
