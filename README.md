@@ -1,23 +1,10 @@
 # googledrive
 
 googledrive is a CLI utility to that can be used working with a Google Drive account from a scripting point of view.
-This differs from other projects as it's aim is not for end users but rather as a component in simple automations
+This differs from other projects as it's aim is not for end users to sync files but rather as a component in simple
+automations
 where a Google Drive is more appropriate than a Google Storage Bucket.
 
---service-account-key
-upload
-download
-create directory
-delete directory
-delete file
-
-file create
--f PathToFile
--n NameOfFile
--e Optional Extension
--d Description
--p A comma separated list of parent folder IDs.
--P A comma separated list of parent paths.
 
 # file list
 
@@ -35,7 +22,13 @@ file create
 | list           | bool   | false                                                   | Displays the files in long format.                                                                                                                                                                                                  |
 | out            | string | std                                                     | Denotes the format the data should be returned in. [std                                                                                                                                                                             |json]|
 
+# file create
 
-
+| Long        | Type   | Default                       | Required | Details                                                                                                |
+|-------------|--------|-------------------------------|----------|--------------------------------------------------------------------------------------------------------|
+| file        | string |                               | true     | The path to the file to upload.                                                                        |
+| name        | string | The name of the file in file. | false    | An alternative name for the file. If empty the name of the uploading file will be used.                |
+| parents     | string | .                             | false    | The ID of the parent container for the file. If not provided the root of the users drive will be used. |
+| description | string |                               | false    | Sets the description field of the file.                                                                |
 
 

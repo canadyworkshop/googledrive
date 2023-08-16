@@ -8,11 +8,11 @@ import (
 )
 
 var RootVars = struct {
-	LoggingLevel string
-	SACredsPath  string
+	VerboseLogging bool
+	SACredsPath    string
 }{
-	LoggingLevel: "none",
-	SACredsPath:  "",
+	VerboseLogging: false,
+	SACredsPath:    "",
 }
 
 var log *zap.SugaredLogger
@@ -33,7 +33,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVar(&RootVars.LoggingLevel, "logging-level", "none", "The level to write logs at. [verbose, debug, none]")
+	rootCmd.PersistentFlags().BoolVarP(&RootVars.VerboseLogging, "verbose", "v", false, "Enables verbose logging.")
 	rootCmd.PersistentFlags().StringVarP(&RootVars.SACredsPath, "sa-credentials-file-path", "c", "", "The path to the credential file for the SA being used.")
 
 	rootCmd.MarkPersistentFlagRequired("sa-credentials-file-path")
@@ -42,17 +42,10 @@ func init() {
 }
 
 func initConfig() {
-	switch RootVars.LoggingLevel {
-	case "verbose":
-		logger, _ := zap.NewProduction()
-		log = logger.Sugar()
-	case "debug":
+	if RootVars.VerboseLogging {
 		logger, _ := zap.NewDevelopment()
 		log = logger.Sugar()
-
-	default:
+	} else {
 		log = zap.NewNop().Sugar()
 	}
-
-	log.Info("logging enabled")
 }
