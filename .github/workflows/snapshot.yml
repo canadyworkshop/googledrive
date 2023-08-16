@@ -1,8 +1,8 @@
-name: Snapshot
+name: goreleaser
 
 on:
+  pull_request:
   push:
-    branches: [ "main" ]
 
 permissions:
   contents: write
@@ -11,186 +11,23 @@ jobs:
   goreleaser:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      -
+        name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Set up Go
+      -
+        name: Set up Go
         uses: actions/setup-go@v4
-        with:
-          go-version: stable
-      - name: Run GoReleaser
+      -
+        name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v4
         with:
           # either 'goreleaser' (default) or 'goreleaser-pro'
           distribution: goreleaser
           version: latest
-          args: release --clean --snapshot
+          args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Your GoReleaser Pro key, if you are using the 'goreleaser-pro' distribution
           # GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
-  # .goreleaser.yaml
-release:
-  # Repo in which the release will be created.
-  # Default is extracted from the origin remote URL or empty if its private hosted.
-  github:
-    owner: user
-    name: repo
-
-  # If set to true, will not auto-publish the release.
-  # Available only for GitHub and Gitea.
-  draft: true
-
-  # Whether to remove existing draft releases with the same name before creating
-  # a new one.
-  # Only effective if `draft` is set to true.
-  # Available only for GitHub.
-  #
-  # Since: v1.11
-  replace_existing_draft: true
-
-  # Useful if you want to delay the creation of the tag in the remote.
-  # You can create the tag locally, but not push it, and run GoReleaser.
-  # It'll then set the `target_commitish` portion of the GitHub release to the
-  # value of this field.
-  # Only works on GitHub.
-  #
-  # Default: ''
-  # Since: v1.11
-  # Templates: allowed
-  target_commitish: "{{ .Commit }}"
-
-  # This allows to change which tag GitHub will create.
-  # Usually you'll use this together with `target_commitish`, or if you want to
-  # publish a binary from a monorepo into a public repository somewhere, without
-  # the tag prefix.
-  #
-  # Default: '{{ .PrefixedCurrentTag }}'
-  # Since: v1.19 (pro)
-  # Templates: allowed
-  tag: "{{ .CurrentTag }}"
-
-  # If set to auto, will mark the release as not ready for production
-  # in case there is an indicator for this in the tag e.g. v1.0.0-rc1
-  # If set to true, will mark the release as not ready for production.
-  # Default is false.
-  prerelease: auto
-
-  # If set to false, will NOT mark the release as "latest".
-  # This prevents it from being shown at the top of the release list,
-  # and from being returned when calling https://api.github.com/repos/OWNER/REPO/releases/latest.
-  #
-  # Available only for GitHub.
-  #
-  # Default is true.
-  # Since: v1.20.
-  make_latest: true
-
-  # What to do with the release notes in case there the release already exists.
-  #
-  # Valid options are:
-  # - `keep-existing`: keep the existing notes
-  # - `append`: append the current release notes to the existing notes
-  # - `prepend`: prepend the current release notes to the existing notes
-  # - `replace`: replace existing notes
-  #
-  # Default is `keep-existing`.
-  mode: append
-
-  # # Header for the release body.
-  # #
-  # # Templates: allowed
-  # header: |
-  #   ## Some title ({{ .Date }})
-
-  #   Welcome to this new release!
-
-  # # Header for the release body.
-  # #
-  # # This feature is only available in GoReleaser Pro.
-  # # Since v1.20 (pro)
-  # header:
-  #   # Loads from an URL.
-  #   from_url:
-  #     # Templates: allowed
-  #     url: https://foo.bar/header.md
-  #     headers:
-  #       x-api-token: "${MYCOMPANY_TOKEN}"
-
-  #   # Loads from a local file.
-  #   # Overrides `from_url`.
-  #   from_file:
-  #     # Templates: allowed
-  #     path: ./header.md
-
-  # # Footer for the release body.
-  # #
-  # # Templates: allowed
-  # footer: |
-  #   ## Thanks
-
-  #   Those were the changes on {{ .Tag }}!
-
-  # # Footer for the release body.
-  # #
-  # # This feature is only available in GoReleaser Pro.
-  # # Since v1.20 (pro)
-  # footer:
-  #   # Loads from an URL.
-  #   from_url:
-  #     # Templates: allowed
-  #     url: https://foo.bar/footer.md
-  #     footers:
-  #       x-api-token: "${MYCOMPANY_TOKEN}"
-
-  #   # Loads from a local file.
-  #   # Overrides `from_url`.
-  #   from_file:
-  #     # Templates: allowed
-  #     path: ./footer.md
-
-  # You can change the name of the release.
-  #
-  # Default: '{{.Tag}}' ('{{.PrefixedTag}}' on Pro)
-  # Templates: allowed
-  name_template: "{{.ProjectName}}-v{{.Version}} {{.Env.USER}}"
-
-  # You can disable this pipe in order to not create the release on any SCM.
-  # Keep in mind that this might also break things that depend on the release
-  # URL, for instance, homebrew taps.
-  #
-  # Templates: allowed (since v1.15)
-  disable: true
-
-  # Set this to true if you want to disable just the artifact upload to the SCM.
-  # If this is true, GoReleaser will still create the release with the
-  # changelog, but won't upload anything to it.
-  #
-  # Since: v1.11
-  # Templates: allowed (since v1.15)
-  skip_upload: true
-
-  # You can add extra pre-existing files to the release.
-  # The filename on the release will be the last part of the path (base).
-  # If another file with the same name exists, the last one found will be used.
-  #
-  # Templates: allowed
-  extra_files:
-    - glob: ./path/to/file.txt
-    - glob: ./glob/**/to/**/file/**/*
-    - glob: ./glob/foo/to/bar/file/foobar/override_from_previous
-    - glob: ./single_file.txt
-      name_template: file.txt # note that this only works if glob matches 1 file only
-
-  # Additional templated extra files to add to the release.
-  # Those files will have their contents pass through the template engine,
-  # and its results will be added to the release.
-  #
-  # Since: v1.17 (pro)
-  # This feature is only available in GoReleaser Pro.
-  # Templates: allowed
-  templated_extra_files:
-    - src: LICENSE.tpl
-      dst: LICENSE.txt
-
