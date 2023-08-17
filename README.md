@@ -1,9 +1,7 @@
 # googledrive
 
-googledrive is a CLI utility to that can be used working with a Google Drive account from a scripting point of view.
-This differs from other projects as it's aim is not for end users to sync files but rather as a component in simple
-automations
-where a Google Drive is more appropriate than a Google Storage Bucket.
+googledrive is a CLI utility that's aim is to be used with scripting. This differs from other Google Drive CLI
+utilities that primarily focus on providing file syncing.
 
 
 # file list
